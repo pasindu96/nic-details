@@ -15,7 +15,6 @@ public class NICValidateController {
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public NICDataDTO getNICDetails(@PathVariable("id") String id){
         System.out.println(id);
-        service.getDataFromNIC(id.replace("id=",""));
-        return null;
+        return service.getDataFromNIC(id.replace("id=",""));
     }
 }

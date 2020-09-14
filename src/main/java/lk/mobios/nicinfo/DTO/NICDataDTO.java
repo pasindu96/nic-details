@@ -4,9 +4,9 @@ import java.util.Date;
 
 public class NICDataDTO {
     private String gender;
-    private Date birthDate;
+    private String birthDate;
 
-    public NICDataDTO(String gender, Date birthDate) {
+    public NICDataDTO(String gender, String birthDate) {
         this.gender = gender;
         this.birthDate = birthDate;
     }
@@ -22,11 +22,11 @@ public class NICDataDTO {
         this.gender = gender;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
