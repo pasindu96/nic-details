@@ -1,0 +1,20 @@
+body {
+  background-color: #6699ff;
+}
+
+div {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+h1 {
+  margin-top: 5%;
+}
+
+#form {
+  margin-top: 2%;
+}
+
+#gender {
+  margin-top: 2%;
+}
