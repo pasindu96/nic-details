@@ -1,0 +1,39 @@
+<html>
+
+<head>
+    <script>
+        var baseURL = "http://localhost:8080/api/nic/id=";
+
+        function getData(nic) {
+            if (!nic) {
+                alert("Please enter the NIC !");
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("GET", baseURL.concat(nic + ""), true);
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        data = JSON.parse(xmlhttp.responseText);
+                        alert(data);
+                    }
+                };
+                xmlhttp.send();
+
+            }
+
+        }
+    </script>
+
+</head>
+
+<body>
+    <div>
+        <form>
+            <label>Enter your NIC : </label>
+            <input type="text" id="nic" required>
+            <button type="submit" id="btnSearch" onClick="getData(document.getElementById('nic').value)">Get
+                Details</button>
+        </form>
+    </div>
+</body>
+
+</html>
