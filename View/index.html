@@ -14,9 +14,15 @@
           xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
               var data = JSON.parse(xmlhttp.responseText);
-              document.getElementById('gender').innerHTML=data.gender;
-              document.getElementById('dob').innerHTML=data.birthDate;
-              console.log(data);
+              if(data.gender==null){
+                alert("Invalid NIC !")
+                document.getElementById('gender').innerHTML="Null";
+                document.getElementById('dob').innerHTML="Null";
+              }else{
+                document.getElementById('gender').innerHTML=data.gender;
+                document.getElementById('dob').innerHTML=data.birthDate;
+                console.log(data);
+              }
             }
           };
           xmlhttp.send();

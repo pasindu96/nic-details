@@ -14,7 +14,8 @@ public class NICDataService {
     private int[] leapyear = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     //regex for validate nic
-    private String nicValidateRegex="^(?:19|20)?\\d{2}(?:[0-35-8]\\d\\d(?<!(?:000|500|36[7-9]|3[7-9]\\d|86[7-9]|8[7-9]\\d)))\\d{4}(?i:v|x)$";
+//    private String nicValidateRegex="^(?:19|20)?\\d{2}(?:[0-35-8]\\d\\d(?<!(?:000|500|36[7-9]|3[7-9]\\d|86[7-9]|8[7-9]\\d)))\\d{4}(?i:v|x?[0-9]:)";
+    private String nicValidateRegex="^(?:19|20)?\\d{2}(?:[0-35-8]\\d\\d(?<!(?:000|500|36[7-9]|3[7-9]\\d|86[7-9]|8[7-9]\\d)))\\d{4}(?i:v|x|[0-9])$";
 
     public NICDataDTO getDataFromNIC(String id){
 
@@ -24,10 +25,10 @@ public class NICDataService {
         System.out.println(result);
 
         if(!result)
-            return null;
+            return new NICDataDTO();
 
         newNIC = id.length() == 12;
-
+        System.out.println(newNIC+" test");
         NICDataDTO dto=new NICDataDTO();
 
         if(newNIC){
