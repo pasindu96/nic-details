@@ -13,8 +13,10 @@
           xmlhttp.open("GET", baseURL.concat(nic + ""), true);
           xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-              data = JSON.parse(xmlhttp.responseText);
-              alert(data);
+              var data = JSON.parse(xmlhttp.responseText);
+              document.getElementById('gender').innerHTML=data.gender;
+              document.getElementById('dob').innerHTML=data.birthDate;
+              console.log(data);
             }
           };
           xmlhttp.send();
@@ -27,21 +29,24 @@
   <body>
     <h1 style="text-align: center">Find Gender and Birthday by NIC Number</h1>
     <div>
-      <form>
+      
         <label>Enter your NIC : </label>
         <input type="text" id="nic" required />
         <button
-          type="submit"
           id="btnSearch"
           onClick="getData(document.getElementById('nic').value)"
         >
           Get Details
         </button>
-      </form>
+      
     </div>
-    <div id="gender"></div>
-    <div id="year"></div>
-    <div id="month"></div>
-    <div id="date"></div>
+    <div>
+      <br>
+      <label> Gender : </label>
+      <span id="gender" class="data"></span>
+      <br>
+      <label> Birthdate : </label>
+      <span id="dob" class="data"></span>
+    </div>
   </body>
 </html>
