@@ -15,7 +15,6 @@ public class NICDataService {
     5 - <366 | < 866
     6 - Only contain numbers
     10 - success
-
      */
 
     //stores whether the given nic is older or latest
@@ -40,7 +39,7 @@ public class NICDataService {
 
             if(newNICFormat){
                 try{
-                    Double.parseDouble(nic.substring(0,12));
+                    Long.parseLong(nic.substring(0,12));
                 }catch (NumberFormatException e){
                     return new NICDataDTO(6);
                 }
@@ -60,16 +59,17 @@ public class NICDataService {
             }else{
                 //old nic
                 try{
-                    Double.parseDouble(nic.substring(0,10));
+                    Long.parseLong(nic.substring(0,9));
                 }catch (NumberFormatException e){
                     return new NICDataDTO(6);
                 }
                 //Checks the 10th digit is V | X
                 if(nic.substring(9).equalsIgnoreCase("v") || nic.substring(9).equalsIgnoreCase("x")){
-                    leap=leapYear(1900+Integer.parseInt(nic.substring(0,2)));
+                    int birthYear = 1900 + Integer.parseInt(nic.substring(0, 2));
+                    leap=leapYear(birthYear);
                     if((Integer.parseInt(nic.substring(2,5))>0 && Integer.parseInt(nic.substring(2,5)) <= (leap?366:365)) || (Integer.parseInt(nic.substring(2,5))>500 && Integer.parseInt(nic.substring(2,5)) <= (leap?866:865))){
                         //return the results of old NIC
-                        return new NICDataDTO(Integer.parseInt(nic.substring(2, 5))>500 ? "Female" : "Male" ,(Integer.parseInt(nic.substring(0,2))+1900)+"-"+setBirthday(nic),10);
+                        return new NICDataDTO(Integer.parseInt(nic.substring(2, 5))>500 ? "Female" : "Male" ,(birthYear)+"-"+setBirthday(nic),10);
 
                     }else{
                         return new NICDataDTO(5);
