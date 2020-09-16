@@ -18,26 +18,28 @@
 
             switch (data.errorCode) {
               case 1:
-                alert("Empty input ! ");
+                alert("Empty input ! - ERROR 1");
                 invalidNICData();
                 break;
               case 2:
-                alert("NIC should contain 10(Old NIC) or 12(New NIC) digits !");
+                alert("NIC should contain 10(Old NIC) or 12(New NIC) digits ! - ERROR 2");
                 invalidNICData();
                 break;
               case 3:
-                alert("New NIC should be starts with 19XXXXXXXXXX or 20XXXXXXXXXX !");
+                alert("New NIC should be starts with 19XXXXXXXXXX or 20XXXXXXXXXX ! - ERROR 3");
                 invalidNICData();
                 break;
               case 4:
-                alert("The last digit of old NIC should be V or X !");
+                alert("The last digit of old NIC should be V or X ! - ERROR 4");
                 invalidNICData();
                 break;
               case 5:
-                alert("Invalid number sequence !");
+                alert("Invalid number sequence ! - ERROR 5");
                 invalidNICData();
                 break;
               case 10: {
+                  document.getElementById('gender').style.color='black';
+                  document.getElementById('dob').style.color='black';
                   document.getElementById('gender').innerHTML = data.gender;
                   document.getElementById('dob').innerHTML = data.birthDate;
                   console.log(data);
@@ -63,7 +65,9 @@
     }
 
     function invalidNICData(){
+      document.getElementById('gender').style.color='red';
       document.getElementById('gender').innerHTML = "Invalid NIC";
+      document.getElementById('dob').style.color='red';
       document.getElementById('dob').innerHTML = "Invalid NIC";
     }
   </script>
