@@ -41,8 +41,8 @@ public class NICDataService {
                 //new nic part
                 if(nic.substring(0,2).equals("19") || nic.substring(0,2).equals("20")){
                     //New NIC is okay
-                    if((Integer.parseInt(nic.substring(4,7))>0 && Integer.parseInt(nic.substring(4,7)) < 366) || Integer.parseInt(nic.substring(4,7))>500 || Integer.parseInt(nic.substring(4,7)) < 866){
-                        leap=leapYear(Integer.parseInt(nic.substring(0,4)));
+                    leap=leapYear(Integer.parseInt(nic.substring(0,4)));
+                    if((Integer.parseInt(nic.substring(4,7))>0 && Integer.parseInt(nic.substring(4,7)) <= (leap?366:365)) || Integer.parseInt(nic.substring(4,7))>500 || Integer.parseInt(nic.substring(4,7)) <= (leap?866:865)){
                         //return the results of new NIC
                         return new NICDataDTO(Integer.parseInt(nic.substring(4, 7))>500 ? "Female" : "Male" ,nic.substring(0,4)+"-"+setBirthday(nic),10);
                     }else{
@@ -55,7 +55,8 @@ public class NICDataService {
                 //old nic part
                 //Checks the 10th digit is V | X
                 if(nic.substring(9).equalsIgnoreCase("v") || nic.substring(9).equalsIgnoreCase("x")){
-                    if((Integer.parseInt(nic.substring(2,5))>0 && Integer.parseInt(nic.substring(2,5)) < 366) || Integer.parseInt(nic.substring(2,5))>500 || Integer.parseInt(nic.substring(2,5)) < 866){
+                    leap=leapYear(1900+Integer.parseInt(nic.substring(0,2)));
+                    if((Integer.parseInt(nic.substring(2,5))>0 && Integer.parseInt(nic.substring(2,5)) <= (leap?366:365)) || (Integer.parseInt(nic.substring(2,5))>500 && Integer.parseInt(nic.substring(2,5)) <= (leap?866:865))){
                         //return the results of old NIC
                         return new NICDataDTO(Integer.parseInt(nic.substring(2, 5))>500 ? "Female" : "Male" ,(Integer.parseInt(nic.substring(0,2))+1900)+"-"+setBirthday(nic),10);
 
