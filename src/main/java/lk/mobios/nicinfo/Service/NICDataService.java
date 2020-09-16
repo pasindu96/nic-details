@@ -13,6 +13,7 @@ public class NICDataService {
     3 - first two digits should starts with 19 | 20
     4 - 10th digit should be V|X
     5 - <366 | < 866
+    6 - Only contain numbers
     10 - success
 
      */
@@ -38,6 +39,11 @@ public class NICDataService {
             newNICFormat = nic.length() == 12;
 
             if(newNICFormat){
+                try{
+                    Double.parseDouble(nic.substring(0,12));
+                }catch (NumberFormatException e){
+                    return new NICDataDTO(6);
+                }
                 //new nic part
                 if(nic.substring(0,2).equals("19") || nic.substring(0,2).equals("20")){
                     //New NIC is okay
@@ -52,7 +58,12 @@ public class NICDataService {
                     return new NICDataDTO(3);
                 }
             }else{
-                //old nic part
+                //old nic
+                try{
+                    Double.parseDouble(nic.substring(0,10));
+                }catch (NumberFormatException e){
+                    return new NICDataDTO(6);
+                }
                 //Checks the 10th digit is V | X
                 if(nic.substring(9).equalsIgnoreCase("v") || nic.substring(9).equalsIgnoreCase("x")){
                     leap=leapYear(1900+Integer.parseInt(nic.substring(0,2)));
