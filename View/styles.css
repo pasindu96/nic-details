@@ -1,5 +1,12 @@
 body {
-  background-color: #80aaff;
+  background-image: linear-gradient(
+    to left bottom,
+    #3e7bd5,
+    #00a1d8,
+    #2dbec3,
+    #92d3b3,
+    #d8e4bd
+  );
 }
 
 div {
@@ -11,10 +18,24 @@ h1 {
   margin-top: 5%;
 }
 
-#form {
+#input {
   margin-top: 2%;
 }
 
 #gender {
   margin-top: 2%;
+}
+
+input {
+  width: 300px !important;
+}
+
+#container {
+  margin-left: 10%;
+  margin-right: auto;
+}
+
+::placeholder {
+  color: black !important;
+  opacity: 0.6 !important;
 }

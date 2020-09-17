@@ -1,103 +1,39 @@
-<html>
-
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>NIC DOB Finder</title>
-  <link rel="icon" href="https://www.pngrepo.com/png/77000/180/id-card.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
   <link rel="stylesheet" href="styles.css" />
-  <script>
-    var baseURL = "http://localhost:8080/api/nic/id=";
-
-    function getData(nic) {
-      if (!nic) {
-        alert("Please enter the NIC !");
-      } else {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", baseURL.concat(nic + ""), true);
-        xmlhttp.onreadystatechange = function () {
-          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            var data = JSON.parse(xmlhttp.responseText);
-
-            switch (data.errorCode) {
-              case 1:
-                alert("Empty input ! - ERROR 1");
-                invalidNICData();
-                break;
-              case 2:
-                alert("NIC should contain 10(Old NIC) or 12(New NIC) digits ! - ERROR 2");
-                invalidNICData();
-                break;
-              case 3:
-                alert("New NIC should be starts with 19XXXXXXXXXX or 20XXXXXXXXXX ! - ERROR 3");
-                invalidNICData();
-                break;
-              case 4:
-                alert("The last digit of old NIC should be V or X ! - ERROR 4");
-                invalidNICData();
-                break;
-              case 5:
-                alert("Invalid number sequence ! - ERROR 5");
-                invalidNICData();
-                break;
-              case 6:
-                alert("NIC should contain numbers ! - ERROR 6");
-                invalidNICData();
-                break;
-              case 10: {
-                  document.getElementById('gender').style.color='black';
-                  document.getElementById('dob').style.color='black';
-                  document.getElementById('gender').innerHTML = data.gender;
-                  document.getElementById('dob').innerHTML = data.birthDate;
-                  console.log(data);
-                }
-                break;
-              default:
-              // code block
-            }
-
-            // if (data.gender == null) {
-            //   alert("Invalid NIC !")
-            //   document.getElementById('gender').innerHTML = "Null";
-            //   document.getElementById('dob').innerHTML = "Null";
-            // } else {
-            //   document.getElementById('gender').innerHTML = data.gender;
-            //   document.getElementById('dob').innerHTML = data.birthDate;
-            //   console.log(data);
-            // }
-          }
-        };
-        xmlhttp.send();
-      }
-    }
-
-    function invalidNICData(){
-      document.getElementById('gender').style.color='red';
-      document.getElementById('gender').innerHTML = "Invalid NIC";
-      document.getElementById('dob').style.color='red';
-      document.getElementById('dob').innerHTML = "Invalid NIC";
-    }
-  </script>
-  <link rel="stylesheet" href="styles.css" />
+  <script src="index.js"></script>
 </head>
 
 <body>
-  <h1 style="text-align: center">Find Gender and Birthday by NIC Number</h1>
-  <div>
+  <section class="section">
+    <h1 class="title" style="text-align: center">Find Gender and Birthday by NIC Number</h1>
+    <div class="container" id="input">
+      <input class="input is-rounded" type="text" onfocus="this.value=''" placeholder="Enter your NIC" id="nic" maxlength="12" required />
+      <button class="button is-primary is-rounded" id="btnSearch"
+        onClick="getData(document.getElementById('nic').value)">
+        Get Details
+      </button>
+    </div>
+    <div class="container">
+      <br />
+      <span id="gender" class="data"></span>
+      <br />
+      <span id="dob" class="data"></span>
+    </div>
+  </section>
 
-    <label>Enter your NIC : </label>
-    <input type="text" id="nic" maxLength="12" required />
-    <button id="btnSearch" onClick="getData(document.getElementById('nic').value)">
-      Get Details
-    </button>
-
-  </div>
-  <div>
-    <br>
-    <label> Gender : </label>
-    <span id="gender" class="data"></span>
-    <br>
-    <label> Birthdate : </label>
-    <span id="dob" class="data"></span>
-  </div>
+  <script>
+    let input = document.getElementById("nic");
+      input.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          document.getElementById("btnSearch").click();
+        }
+      });
+  </script>
 </body>
 
 </html>
