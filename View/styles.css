@@ -39,3 +39,8 @@ input {
   color: black !important;
   opacity: 0.6 !important;
 }
+
+.result {
+  color: #363636;
+  font-weight: 600;
+}
