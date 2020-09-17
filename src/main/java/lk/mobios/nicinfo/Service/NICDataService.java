@@ -17,14 +17,16 @@ public class NICDataService {
     10 - success
      */
 
+    //781843784v --> check the dob manually
+
     //stores whether the given nic is older or latest
     private boolean newNICFormat =false;
     //check the year is leap or not
     private boolean leap=false;
 
     //define 2 arrays which contains the number of  days in normal and leap year
-    private int[] normalYear = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    private int[] leapYear   = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+//    private int[] normalYear = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private int[] normalYear   = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
     public NICDataDTO validateNIC(String nic){
 
@@ -47,7 +49,7 @@ public class NICDataService {
                 if(nic.substring(0,2).equals("19") || nic.substring(0,2).equals("20")){
                     //New NIC is okay
                     leap=leapYear(Integer.parseInt(nic.substring(0,4)));
-                    if((Integer.parseInt(nic.substring(4,7))>0 && Integer.parseInt(nic.substring(4,7)) <= (leap?366:365)) || Integer.parseInt(nic.substring(4,7))>500 || Integer.parseInt(nic.substring(4,7)) <= (leap?866:865)){
+                    if((Integer.parseInt(nic.substring(4,7))>0 && Integer.parseInt(nic.substring(4,7)) <= 366) || Integer.parseInt(nic.substring(4,7))>500 || Integer.parseInt(nic.substring(4,7)) <= 866){
                         //return the results of new NIC
                         return new NICDataDTO(Integer.parseInt(nic.substring(4, 7))>500 ? "Female" : "Male" ,nic.substring(0,4)+"-"+setBirthday(nic),10);
                     }else{
@@ -67,7 +69,7 @@ public class NICDataService {
                 if(nic.substring(9).equalsIgnoreCase("v") || nic.substring(9).equalsIgnoreCase("x")){
                     int birthYear = 1900 + Integer.parseInt(nic.substring(0, 2));
                     leap=leapYear(birthYear);
-                    if((Integer.parseInt(nic.substring(2,5))>0 && Integer.parseInt(nic.substring(2,5)) <= (leap?366:365)) || (Integer.parseInt(nic.substring(2,5))>500 && Integer.parseInt(nic.substring(2,5)) <= (leap?866:865))){
+                    if((Integer.parseInt(nic.substring(2,5))>0 && Integer.parseInt(nic.substring(2,5)) <= 366) || (Integer.parseInt(nic.substring(2,5))>500 && Integer.parseInt(nic.substring(2,5)) <= 866)){
                         //return the results of old NIC
                         return new NICDataDTO(Integer.parseInt(nic.substring(2, 5))>500 ? "Female" : "Male" ,(birthYear)+"-"+setBirthday(nic),10);
 
@@ -90,7 +92,7 @@ public class NICDataService {
 
     private String setBirthday(String id) {
         int total_dates=0;
-        int[] month;
+//        int[] month;
         if (newNICFormat) {
             total_dates = Integer.parseInt(id.substring(4, 7));
         } else {
@@ -102,18 +104,18 @@ public class NICDataService {
 
         int birth_month = 0, birth_date = 0;
         int days = total_dates;
-        if(leap){
-            month= leapYear;
-        }else{
-            month= normalYear;
-        }
-        for (int i = 0; i < month.length; i++) {
-            if (days <= month[i]) {
+//        if(leap){
+//            month= leapYear;
+//        }else{
+//            month= normalYear;
+//        }
+        for (int i = 0; i < normalYear.length; i++) {
+            if (days <= normalYear[i]) {
                 birth_month = i + 1;
                 birth_date = days;
                 break;
             } else {
-                days = days - month[i];
+                days = days - normalYear[i];
             }
         }
         return birth_month+"-"+birth_date;
