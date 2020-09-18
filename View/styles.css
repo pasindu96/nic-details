@@ -28,6 +28,7 @@ h1 {
 
 input {
   width: 300px !important;
+  box-shadow: 0.5px 0.5px !important;
 }
 
 #container {
@@ -43,4 +44,10 @@ input {
 .result {
   color: #363636;
   font-weight: 600;
+}
+
+button {
+  color: black !important;
+  opacity: 0.8 !important;
+  box-shadow: 0.5px 0.5px !important;
 }
