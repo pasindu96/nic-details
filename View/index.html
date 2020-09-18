@@ -4,100 +4,192 @@
   <title>NIC DOB Finder</title>
   <link rel="icon" href="https://www.pngrepo.com/png/77000/180/id-card.png">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
-    var baseURL = "http://localhost:8080/api/nic/id=";
+    var baseURL = "http://localhost:8080/api/nic/";
+    
+    function clearData() {
+      $('#nic').val("");
+      $("#nic").focus();
+      document.getElementById('gender').innerHTML = "";
+      document.getElementById('dob').innerHTML = "";
+    }
 
+    function viewAllData(){
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("GET", baseURL.concat("view"), true);
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+          var records = JSON.parse(xmlhttp.responseText);
+
+          //-----------------------------------------------------------------------------------------------------------------
+          // Should load the table inside this function
+            console.log(records);
+        }
+      };
+      xmlhttp.send();
+    }
     function getData(nic) {
-      if (!nic) {
-        alert("Please enter the NIC !");
-      } else {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", baseURL.concat(nic + ""), true);
-        xmlhttp.onreadystatechange = function () {
-          if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
-            var data = JSON.parse(xmlhttp.responseText);
+      // if (!nic) {
+      //   alert("Please enter the NIC !");
+      // } else {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("GET", baseURL.concat("id="+nic), true);
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+          var data = JSON.parse(xmlhttp.responseText);
 
-            switch (data.errorCode) {
-              case 1:
-                alert("Empty input ! - ERROR 1");
-                invalidNICData();
-                break;
-              case 2:
-                alert("NIC should contain 10(Old NIC) or 12(New NIC) digits ! - ERROR 2");
-                invalidNICData();
-                break;
-              case 3:
-                alert("New NIC should be starts with 19XXXXXXXXXX or 20XXXXXXXXXX ! - ERROR 3");
-                invalidNICData();
-                break;
-              case 4:
-                alert("The last digit of old NIC should be V or X ! - ERROR 4");
-                invalidNICData();
-                break;
-              case 5:
-                alert("Invalid number sequence ! - ERROR 5");
-                invalidNICData();
-                break;
-              case 6:
-                alert("NIC should contain numbers ! - ERROR 6");
-                invalidNICData();
-                break;
-              case 10: {
-                  document.getElementById('gender').style.color='black';
-                  document.getElementById('dob').style.color='black';
-                  document.getElementById('gender').innerHTML = data.gender;
-                  document.getElementById('dob').innerHTML = data.birthDate;
-                  console.log(data);
-                }
-                break;
-              default:
-              // code block
+          switch (data.errorCode) {
+            case 1:
+              // alert("Empty input ! - ERROR 1");
+              // invalidNICData();
+              popUpError("Empty input ! - ERROR 1");
+              break;
+            case 2:
+              // alert("NIC should contain 10(Old NIC) or 12(New NIC) digits ! - ERROR 2");
+              // invalidNICData();
+              popUpError("NIC should contain 10(Old NIC) or 12(New NIC) digits ! - ERROR 2");
+              break;
+            case 3:
+              // alert("New NIC should be starts with 19XXXXXXXXXX or 20XXXXXXXXXX ! - ERROR 3");
+              // invalidNICData();
+              popUpError("New NIC should be starts with 19XXXXXXXXXX or 20XXXXXXXXXX ! - ERROR 3");
+
+              break;
+            case 4:
+              // alert("The last digit of old NIC should be V or X ! - ERROR 4");
+              // invalidNICData();
+              popUpError("The last digit of old NIC should be V or X ! - ERROR 4");
+              break;
+            case 5:
+              popUpError("Invalid number sequence ! - ERROR 5");
+              // alert("Invalid number sequence ! - ERROR 5");
+              // invalidNICData();
+              break;
+            case 6:
+              popUpError("NIC should contain numbers only ! - ERROR 6");
+              // alert("NIC should contain numbers ! - ERROR 6");
+              // invalidNICData();
+              break;
+            case 10: {
+              document.getElementById('gender').innerHTML = "Gender  : " + data.gender;
+              document.getElementById('dob').innerHTML = "Birthday : " + data.birthDate;
+              console.log(data);
             }
-
-            // if (data.gender == null) {
-            //   alert("Invalid NIC !")
-            //   document.getElementById('gender').innerHTML = "Null";
-            //   document.getElementById('dob').innerHTML = "Null";
-            // } else {
-            //   document.getElementById('gender').innerHTML = data.gender;
-            //   document.getElementById('dob').innerHTML = data.birthDate;
-            //   console.log(data);
-            // }
+              break;
+            default:
           }
-        };
-        xmlhttp.send();
-      }
+
+          // if (data.gender == null) {
+          //   alert("Invalid NIC !")
+          //   document.getElementById('gender').innerHTML = "Null";
+          //   document.getElementById('dob').innerHTML = "Null";
+          // } else {
+          //   document.getElementById('gender').innerHTML = data.gender;
+          //   document.getElementById('dob').innerHTML = data.birthDate;
+          //   console.log(data);
+          // }
+        }
+      };
+      xmlhttp.send();
+      // }
     }
 
-    function invalidNICData(){
-      document.getElementById('gender').style.color='red';
-      document.getElementById('gender').innerHTML = "Invalid NIC";
-      document.getElementById('dob').style.color='red';
-      document.getElementById('dob').innerHTML = "Invalid NIC";
+    function invalidNICData() {
+      // document.getElementById('gender').style.color = 'red';
+      // document.getElementById('gender').innerHTML = "Invalid NIC";
+      // document.getElementById('dob').style.color = 'red';
+      // document.getElementById('dob').innerHTML = "Invalid NIC";
     }
+
+    function popUpError(errorMessage) {
+      $(function () {
+        $('.popup_box').fadeIn("slow");
+        $('.popup_box').css("display", "block");
+        document.getElementById('error').innerHTML = errorMessage;
+        document.getElementById('gender').innerHTML = "";
+        document.getElementById('dob').innerHTML = "";
+
+      });
+    }
+    $(document).ready(function () {
+      $('.btnok').click(function () {
+        $('.popup_box').css("display", "none");
+        $('#nic').val("");
+        $("#nic").focus();
+      });
+    });
+
   </script>
-  <link rel="stylesheet" href="styles.css" />
+
 </head>
 
 <body>
-  <h1 style="text-align: center">Find Gender and Birthday by NIC Number</h1>
-  <div>
 
-    <label>Enter your NIC : </label>
-    <input type="text" id="nic" maxLength="12" required />
-    <button id="btnSearch" onClick="getData(document.getElementById('nic').value)">
-      Get Details
-    </button>
+  <div class="card" style="width: 30rem; margin-top: 100px;">
+    <img src="https://www.shareicon.net/data/256x256/2016/09/01/822585_world_512x512.png" class="center" alt="..." width="100px" >
+    <h3 class="card-title"><b>Sri Lanka NIC Information</b></h3>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-5">
+          <label id="niclabel">Enter your NIC </label>
+        </div>
+        <div class="col-6">
+          <input type="text" id="nic" maxLength="12" class="form-control" placeholder="Enter your NIC here..."
+            style="font-weight: bold;" required />
+        </div>
+      </div>
 
-  </div>
-  <div>
-    <br>
-    <label> Gender : </label>
+      <br>
+      <a href="#" onClick="getData(document.getElementById('nic').value)" id="btnSearch" class="btn btn-primary">Get
+        Details</a>
+      <a href="#" onClick="clearData()" id="btnClear" class="btn btn-primary">Clear</a>
+      <a href="#" onClick="viewAllData()" id="btnViewData" class="btn btn-primary">View Records</a>
+    </div>
     <span id="gender" class="data"></span>
     <br>
-    <label> Birthdate : </label>
     <span id="dob" class="data"></span>
+    <script>
+      var input = document.getElementById("nic");
+      document.getElementById("nic").addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+          event.preventDefault();
+          document.getElementById("btnSearch").click();
+        }
+      });
+    </script>
   </div>
+
+  <!-- Custom Alert box -->
+  <div class="popup_box" id="popup_box">
+    <i class="fas fa-exclamation"></i>
+    <h1 id="error"></h1>
+    <br>
+    <div class="btns">
+      <a href="#" class="btnok">OK</a>
+    </div>
+    <table id="myTable">
+      
+    </table>
+    <br>
+  </div>
+
+  <!-- Check how you can get rid of by pressing enter key -->
+  <!-- <script>
+    $(".popup_box").ready(function (e) {
+          $(document).keypress(function (e) {
+              e.preventDefault();
+              if (e.which == 13) {
+                  // if ($(".popup_box").css("display") == "block") {
+                      $('.popup_box').css("display", "none");
+                  // }
+              }
+          });
+      });
+  </script> -->
 </body>
 
 </html>
