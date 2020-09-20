@@ -10,34 +10,116 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
     var baseURL = "http://localhost:8080/api/nic/";
-    
+    //Function to clear the input fields
     function clearData() {
       $('#nic').val("");
       $("#nic").focus();
       document.getElementById('gender').innerHTML = "";
       document.getElementById('dob').innerHTML = "";
+      hideAllRecordDiv();
+
+    }
+    //Function to hide the records table div
+    function hideAllRecordDiv() {
+      var x = document.getElementById("tblDiv");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+    //Function to show the record table div
+    function showAllRecordsDiv() {
+      var x = document.getElementById("tblDiv");
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+      }
     }
 
-    function viewAllData(){
+    //Function to edit the data
+    function editRecord(nic, gender, birthday) {
+
+      if (gender || gender.trim()) {
+        if (birthday || birthday.trim()) {
+          const json = {
+            "nic": nic,
+            "gender": gender,
+            "birthDay": birthday,
+          };
+          var xmlhttp = new XMLHttpRequest();
+          xmlhttp.open("POST", baseURL.concat("update"), true);
+          xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+              showAllRecordsDiv();
+              viewAllData();
+            }
+          }
+          xmlhttp.setRequestHeader('Content-Type', 'application/json');
+          xmlhttp.send(JSON.stringify(json));
+        } else {
+          popUpError("A field should contain a value !");
+        }
+      } else {
+        popUpError("A field should contain a value !");
+      }
+      // var xmlhttp=new XMLHttpRequest();
+      // xmlhttp.open("POST",)
+    }
+    //Function to delete a record
+    function deleteRecord(nic) {
+      alert(nic);
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.open("GET", baseURL.concat("delete/nic=" + nic), true);
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+          //     console.log(records);
+          var records = JSON.parse(xmlhttp.responseText);
+          var table = document.getElementById('myTable')
+          table.innerHTML = "";
+          viewAllData();
+        };
+      };
+      xmlhttp.send();
+
+      // viewAllData();
+    }
+    //Function to show all the records
+    function viewAllData() {
+      showAllRecordsDiv();
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open("GET", baseURL.concat("view"), true);
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
           var records = JSON.parse(xmlhttp.responseText);
+          var records = JSON.parse(xmlhttp.responseText);
+          var table = document.getElementById('myTable');
+          table.innerHTML = "";
+          // var table = document.getElementById('myTable')
 
-          //-----------------------------------------------------------------------------------------------------------------
-          // Should load the table inside this function
-            console.log(records);
+          for (var i = 0; i < records.length; i++) {
+            var row = `<tr>
+                    <td>${records[i].nic}</td>
+                    <td><input class="editData" id="editGender" type="text" style='width: 60px' value="${records[i].gender}" required></td>
+                    <td><input class="editData" id="editDob" type="text" style='width: 180px' value="${records[i].birthDay}" required></td>
+                    <td><a href="#" data-toggle="tooltip" title="Edit the data and click this button !"onClick="editRecord('${records[i].nic}',document.getElementById('editGender').value,document.getElementById('editDob').value)"><i class="fa fa-edit" style="font-size:24px;color:black"></i></a></td>
+                    <td><a href="#" onClick="deleteRecord('${records[i].nic}')"><i class="fa fa-trash" style="font-size:24px;color:red"></a></i></td>
+                  </tr>`
+            table.innerHTML += row
+          }
+          console.log(records);
         }
       };
       xmlhttp.send();
     }
+
     function getData(nic) {
-      // if (!nic) {
-      //   alert("Please enter the NIC !");
-      // } else {
+      var table = document.getElementById('myTable')
+      table.innerHTML = "";
+
       var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("GET", baseURL.concat("id="+nic), true);
+      xmlhttp.open("GET", baseURL.concat("id=" + nic), true);
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
           var data = JSON.parse(xmlhttp.responseText);
@@ -130,7 +212,8 @@
 <body>
 
   <div class="card" style="width: 30rem; margin-top: 100px;">
-    <img src="https://www.shareicon.net/data/256x256/2016/09/01/822585_world_512x512.png" class="center" alt="..." width="100px" >
+    <img src="https://www.shareicon.net/data/256x256/2016/09/01/822585_world_512x512.png" class="center" alt="..."
+      width="100px">
     <h3 class="card-title"><b>Sri Lanka NIC Information</b></h3>
     <div class="card-body">
       <div class="row">
@@ -171,25 +254,29 @@
     <div class="btns">
       <a href="#" class="btnok">OK</a>
     </div>
-    <table id="myTable">
-      
-    </table>
     <br>
   </div>
-
-  <!-- Check how you can get rid of by pressing enter key -->
-  <!-- <script>
-    $(".popup_box").ready(function (e) {
-          $(document).keypress(function (e) {
-              e.preventDefault();
-              if (e.which == 13) {
-                  // if ($(".popup_box").css("display") == "block") {
-                      $('.popup_box').css("display", "none");
-                  // }
-              }
-          });
-      });
-  </script> -->
+  
+  <!-- View all records in the database -->
+  <div class="card" style="width: 40rem; margin-top: 100px;" id="tblDiv">    
+    <h3 class="card-title"><b>Previous Records</b></h3>
+    <div class="card-body">
+      <div class="row">
+        <table class="table table-striped" style="text-align: center;" id="tblRecords">
+          <tr class="bg-info">
+            <th>NIC</th>
+            <th>Gender</th>
+            <th>Birthday</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+          <tbody id="myTable">
+            <!-- Table body which is loaded dynamucally -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
