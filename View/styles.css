@@ -1,5 +1,4 @@
 body {
-  /* background-color: #87abf5 !important; */
   background: rgb(165,161,235) !important;
   background: linear-gradient(90deg, rgba(165,161,235,1) 0%, rgba(100,100,219,0.9669001389618347) 43%, rgba(119,214,233,1) 99%) !important;
 }
@@ -9,8 +8,6 @@ div {
   font-size: 1.5rem;
   border-radius: 8% !important;
 }
-
-
 
 h1 {
   margin-top: 5%;
@@ -23,11 +20,19 @@ h1 {
 
 #gender {
   margin-top: 2%;
-  font-family: FontAwesome !important;
+  font-family: 'Barlow Condensed', sans-serif !important;
 }
+
 #nic{
   border-radius: 6% !important;
+  font-size: 24px;
+  font-family: 'Barlow Condensed', sans-serif !important;
 }
+
+#dob{
+  font-family: 'Barlow Condensed', sans-serif !important;
+}
+
 .card {
   margin: 0 auto; 
   float: none; 
@@ -41,6 +46,7 @@ h1 {
   margin-left: auto;
   margin-right: auto;
 }
+
 #niclabel{
   float: left !important;
   text-align:left !important;
@@ -50,10 +56,12 @@ h1 {
 .card-title{
   font-family: FontAwesome !important;
 }
+
 h1{
   font-family: Verdana, Geneva, Tahoma, sans-serif !important;
   font-size: 20px !important;
 }
+
 .btnok{
   font-family: FontAwesome !important;
   font-size: 18px !important;
@@ -66,7 +74,11 @@ h1{
   
 }
 
-/* ------------------------------------------------------------- */
+#btnSearch{
+  border-radius: 8% !important;
+}
+
+/* Popup error */
 .popup_box{
   position: absolute;
   top: 46%;
@@ -84,6 +96,7 @@ h1{
   z-index: 9999;
   display: none;
 }
+
 .popup_box i{
   font-size: 20px;
   color:  #ff0101;
@@ -109,6 +122,7 @@ h1{
   z-index: 9999;
   display: none;
 }
+
 .popup_box_success i{
   font-size: 20px;
   color:  #01ff41;
@@ -117,6 +131,7 @@ h1{
   border-radius: 50%;
   margin: -10px 0 20px 0;
 }
+
 .btnSuccess{
   font-family: FontAwesome !important;
   font-size: 18px !important;
@@ -138,17 +153,3 @@ h1{
   background: transparent;
   /* border: none; */
 }
-/* ------------------------------------------------------------------------------------------------------------------ */
-/* th, td, p, input {
-  font:14px Verdana;
-}
-table, th, td 
-{
-  border: solid 1px #DDD;
-  border-collapse: collapse;
-  padding: 2px 3px;
-  text-align: center;
-}
-th {
-  font-weight:bold;
-} */
