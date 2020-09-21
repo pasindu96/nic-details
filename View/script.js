@@ -14,9 +14,7 @@ function clearData() {
 //Function to hide the records table div
 function hideAllRecordDiv() {
     var x = document.getElementById("tblDiv");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-    } else {
+    if (x.style.display === "block") {
         x.style.display = "none";
     }
 }
@@ -31,9 +29,25 @@ function showAllRecordsDiv() {
     }
 }
 
+function showUpdateBox(nic, gender, birthday) {
+    var x = document.getElementById("popup_box_edit");
+    if (x.style.display === "block") {
+        // x.style.display = "none";
+    } else {
+        x.style.display = "block";
+    }
+    document.getElementById('nicEdit').value = nic;
+    document.getElementById('genderEdit').value = gender;
+    document.getElementById('dobEdit').value = birthday;
+}
 //Function to edit the data
 function editRecord(nic, gender, birthday) {
-
+    var x = document.getElementById("popup_box_edit");
+    if (x.style.display === "block") {
+        x.style.display = "none";
+    } else {
+        // x.style.display = "block";
+    }
     if (gender || gender.trim()) {
         if (birthday || birthday.trim()) {
             const json = {
@@ -48,6 +62,9 @@ function editRecord(nic, gender, birthday) {
                     var data = JSON.parse(xmlhttp.responseText);
                     if (data)
                         popUpSuccess("Record updated successfully !");
+                    else
+                        popUpError("Record Update failed !");
+
                     showAllRecordsDiv();
                     viewAllData();
                 }
@@ -60,12 +77,32 @@ function editRecord(nic, gender, birthday) {
     } else {
         popUpError("A field should contain a value !");
     }
-    // var xmlhttp=new XMLHttpRequest();
-    // xmlhttp.open("POST",)
+}
+
+function showConfirmDeleteBox(nic) {
+    var x = document.getElementById("popup_delete");
+    if (x.style.display === "block") {
+        // x.style.display = "none";
+    } else {
+        x.style.display = "block";
+    }
+    $(document).ready(function () {
+        $('#btnDelete').click(function () {
+            // $('.popup_delete').css("display", "none");
+            deleteRecord(nic);
+        });
+    });
 }
 
 //Function to delete a record
 function deleteRecord(nic) {
+    var x = document.getElementById("popup_delete");
+    if (x.style.display === "block") {
+        x.style.display = "none";
+    } else {
+        // x.style.display = "block";
+    }
+
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", baseURL.concat("delete/nic=" + nic), true);
     xmlhttp.onreadystatechange = function () {
@@ -74,6 +111,8 @@ function deleteRecord(nic) {
             var data = JSON.parse(xmlhttp.responseText);
             if (data)
                 popUpError("Record Deleted Successfully !");
+            else
+                popUpError("Record delete failed !");
             console.log(data);
             var table = document.getElementById('myTable')
             table.innerHTML = "";
@@ -100,10 +139,13 @@ function viewAllData() {
             for (var i = 0; i < records.length; i++) {
                 var row = `<tr>
                     <td>${records[i].nic}</td>
-                    <td><input class="editData" id="editGender" type="text" style='width: 60px' value="${records[i].gender}" required></td>
-                    <td><input class="editData" id="editDob" type="text" style='width: 180px' value="${records[i].birthDay}" required></td>
-                    <td><a href="#" data-toggle="tooltip" title="Edit the data and click this button !"onClick="editRecord('${records[i].nic}',document.getElementById('editGender').value,document.getElementById('editDob').value)"><i class="fa fa-edit" style="font-size:24px;color:black"></i></a></td>
-                    <td><a href="#" onClick="deleteRecord('${records[i].nic}')"><i class="fa fa-trash" style="font-size:24px;color:red"></a></i></td>
+                    <td>${records[i].gender}</td>
+                    <td>${records[i].birthDay}</td>
+                    <!--<td><input class="editData" id="editGender" type="text" style='width: 60px' value="${records[i].gender}" required></td>-->
+                    <!--<td><input class="editData" id="editDob" type="text" style='width: 180px' value="${records[i].birthDay}" required></td>-->
+                    <!--<td><a href="#" data-toggle="tooltip" title="Edit the data and click this button !" onClick="showUpdateBox('${records[i].nic}',document.getElementById('editGender').value,document.getElementById('editDob').value)"><i class="fa fa-edit" style="font-size:24px;color:black"></i></a></td>-->
+                    <td><a href="#" data-toggle="tooltip" title="Edit the data and click this button !" onClick="showUpdateBox('${records[i].nic}','${records[i].gender}','${records[i].birthDay}')"><i class="fa fa-edit" style="font-size:24px;color:black"></i></a></td>
+                    <td><a href="#" onClick="showConfirmDeleteBox('${records[i].nic}')"><i class="fa fa-trash" style="font-size:24px;color:red"></a></i></td>
                   </tr>`
                 table.innerHTML += row
             }
@@ -199,3 +241,13 @@ $(document).ready(function () {
     });
 });
 
+$(document).ready(function () {
+    $('#btnCancel').click(function () {
+        $('.popup_delete').css("display", "none");
+    });
+});
+$(document).ready(function () {
+    $('.btnCancel').click(function () {
+        $('.popup_box_edit').css("display", "none");
+    });
+});

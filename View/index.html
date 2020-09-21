@@ -16,7 +16,7 @@
 
 <body>
 
-  <div class="card" style="width: 30rem; margin-top: 100px;">
+  <div class="card" style="width: 30rem; margin-top: 100px; border: 2px solid black;">
     <img src="https://www.shareicon.net/data/256x256/2016/09/01/822585_world_512x512.png" class="center" alt="..."
       width="100px">
     <h3 class="card-title"><b>Sri Lanka NIC Information</b></h3>
@@ -40,6 +40,7 @@
     <span id="gender" class="data"></span>
     <br>
     <span id="dob" class="data"></span>
+    <!-- A function to trigger the click event by pressing the enter key -->
     <script>
       var input = document.getElementById("nic");
       document.getElementById("nic").addEventListener("keyup", function (event) {
@@ -49,9 +50,10 @@
         }
       });
     </script>
+
   </div>
 
-  <!-- Custom Alert box -->
+  <!-- Error Alert box -->
   <div class="popup_box" id="popup_box">
     <i class="fas fa-exclamation"></i>
     <h1 id="error"></h1>
@@ -73,13 +75,49 @@
     <br>
   </div>
 
+  <!-- Edit data box -->
+  <div class="popup_box_edit" id="popup_box_edit">
+
+    <div >
+      <input type="text" id="nicEdit" maxLength="12" class="form-control" placeholder="Enter your NIC here..."
+        style="font-weight: bold;" disabled />
+    </div>
+    <div >
+      <input type="text" id="genderEdit" maxLength="10" class="form-control" placeholder="Enter your NIC here..."
+        style="font-weight: bold;" required />
+    </div>
+    <div >
+      <input type="text" id="dobEdit" maxLength="30" class="form-control" placeholder="Enter your NIC here..."
+        style="font-weight: bold;" required />
+    </div>
+    <br>
+    <div class="btns">
+      <a href="#" class="btnUpdate" onClick="editRecord(document.getElementById('nicEdit').value,document.getElementById('genderEdit').value,document.getElementById('dobEdit').value)">Update Details</a>
+      <a href="#" class="btnCancel">Cancel</a>
+    </div>
+    <br>
+  </div>
+
+  <!-- Delete confirm box -->
+  <div class="popup_delete" id="popup_delete">
+    <i class="fas fa-question"></i>
+    <h1>Do you really want to delete the record ?</h1>
+    <br>
+    <div class="btns">
+      <button id="btnCancel">Cancel</button>
+      <button id="btnDelete" >Delete</button>
+    </div>
+    <br>
+  </div>
+
 
   <!-- View all records in the database -->
-  <div class="card" style="width: 40rem; margin-top: 100px;" id="tblDiv">
+  <div class="card" style="width: 50rem; margin-top: 40px;" id="tblDiv">
+    <br>
     <h3 class="card-title"><b>Previous Records</b></h3>
     <div class="card-body">
       <div class="row">
-        <table class="table table-striped" style="text-align: center;" id="tblRecords">
+        <table class="table table-striped" style="text-align: center; align-content: center;" id="tblRecords">
           <tr class="bg-info">
             <th>NIC</th>
             <th>Gender</th>
