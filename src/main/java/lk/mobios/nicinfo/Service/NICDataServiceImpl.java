@@ -67,6 +67,7 @@ public class NICDataServiceImpl implements NICDataService{
                         //Save the search result to the database
 //                        saveNICDetails(new NICData(nic,gender,dob));
                         //return the results of new NIC
+                        saveNICDetails(new NICData(nic,gender,dob));
                         return new NICDataDTO(gender ,dob,10);
                     }else{
                         return new NICDataDTO(5);
@@ -156,7 +157,7 @@ public class NICDataServiceImpl implements NICDataService{
     //A method to update the data in the database
     @Override
     public boolean updateNICDetails(NICData data){
-        
+
         NICData toUpdate=repository.findById(data.getNic()).get();
         toUpdate.setBirthDay(data.getBirthDay());
         toUpdate.setGender(data.getGender());

@@ -29,6 +29,7 @@ public class NICValidateController {
     public boolean updateNicDetails(@RequestBody NICData data){
         return service.updateNICDetails(data);
     }
+
     @GetMapping(value="/view",produces = MediaType.APPLICATION_JSON_VALUE)
     public List<NICData> viewAllNicRecords(){
         return service.viewNICDetails();

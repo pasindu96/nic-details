@@ -8,6 +8,7 @@
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed&display=swap" rel="stylesheet"> 
   <script>
     var baseURL = "http://localhost:8080/api/nic/";
     //Function to clear the input fields
@@ -52,6 +53,9 @@
           xmlhttp.open("POST", baseURL.concat("update"), true);
           xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+              var data = JSON.parse(xmlhttp.responseText);
+              if(data)
+                popUpSuccess("Record updated successfully !");
               showAllRecordsDiv();
               viewAllData();
             }
@@ -69,15 +73,18 @@
     }
     //Function to delete a record
     function deleteRecord(nic) {
-      alert(nic);
       var xmlhttp = new XMLHttpRequest();
       xmlhttp.open("GET", baseURL.concat("delete/nic=" + nic), true);
       xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
           //     console.log(records);
-          var records = JSON.parse(xmlhttp.responseText);
+          var data = JSON.parse(xmlhttp.responseText);
+          if(data)
+            popUpError("Record Deleted Successfully !");
+          console.log(data);
           var table = document.getElementById('myTable')
           table.innerHTML = "";
+          hideAllRecordDiv();
           viewAllData();
         };
       };
@@ -186,7 +193,7 @@
       // document.getElementById('dob').style.color = 'red';
       // document.getElementById('dob').innerHTML = "Invalid NIC";
     }
-
+    //Function to popup an error
     function popUpError(errorMessage) {
       $(function () {
         $('.popup_box').fadeIn("slow");
@@ -197,11 +204,27 @@
 
       });
     }
+
     $(document).ready(function () {
       $('.btnok').click(function () {
         $('.popup_box').css("display", "none");
         $('#nic').val("");
         $("#nic").focus();
+      });
+    });
+
+    //Function to popup a success message
+    function popUpSuccess(successMessage) {
+      $(function () {
+        $('.popup_box_success').fadeIn("slow");
+        $('.popup_box_success').css("display", "block");
+        document.getElementById('success').innerHTML = successMessage;
+      });
+    }
+
+    $(document).ready(function () {
+      $('.btnSuccess').click(function () {
+        $('.popup_box_success').css("display", "none");
       });
     });
 
@@ -256,6 +279,18 @@
     </div>
     <br>
   </div>
+
+  <!-- Success Alert box -->
+  <div class="popup_box_success" id="popup_box_success">
+    <i class="fas fa-exclamation"></i>
+    <h1 id="success"></h1>
+    <br>
+    <div class="btns">
+      <a href="#" class="btnSuccess">OK</a>
+    </div>
+    <br>
+  </div>
+
   
   <!-- View all records in the database -->
   <div class="card" style="width: 40rem; margin-top: 100px;" id="tblDiv">    
